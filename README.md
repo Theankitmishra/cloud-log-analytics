@@ -243,7 +243,7 @@ pytest tests -v
 - **Degree**: M.Tech in Computer Science, **Delhi Technological University (DTU)**  
 - **Specialization**: Cloud Computing, Distributed Systems, LangGraph Multi-Agent AI & MLOps  
 - **Portfolio**: [ankit-mishra-portfolio](https://github.com/Theankitmishra)  
-- **LinkedIn**: [linkedin.com/in/theankitmishra](https://linkedin.com/in/theankitmishra)  
+- **LinkedIn**: [linkedin.com/in/theankitmishraa](https://www.linkedin.com/in/theankitmishraa/)  
 - **Email**: [theankitmishraa@gmail.com](mailto:theankitmishraa@gmail.com)
 
 ---
