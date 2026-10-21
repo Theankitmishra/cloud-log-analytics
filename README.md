@@ -123,6 +123,18 @@ The service includes an interactive web dashboard served directly from `/`:
 
 ---
 
+## 📸 Live Deployment & Telemetry Proofs
+
+| Real-Time Dashboard (100% Error Spike & Anomaly Feed) | FastAPI Interactive Documentation (`/docs`) |
+|:---:|:---:|
+| ![Real-Time Dashboard](docs/screenshots/dashboard_live_telemetry.png) | ![FastAPI Swagger](docs/screenshots/fastapi_swagger_docs.png) |
+
+| Isolation Forest Anomaly Detection Output (`/anomalies`) | Ingested Structured Logs Stream (`/logs`) |
+|:---:|:---:|
+| ![Isolation Forest Anomalies](docs/screenshots/isolation_forest_anomalies_api.png) | ![Logs API Ingestion](docs/screenshots/logs_ingestion_api.png) |
+
+---
+
 ## 🚀 Quickstart & Local Deployment
 
 ### Option A: One-Command Spin Up (Docker Compose)
