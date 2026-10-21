@@ -1,0 +1,7 @@
+project      = "cloud-log-analytics"
+environment  = "production"
+aws_region   = "us-east-1"
+db_username  = "logadmin"
+db_password  = "ChangeMeToASecureRandomPassword123!"
+bastion_cidr = "10.0.0.0/16"
+alert_email  = "theankitmishraa@gmail.com"

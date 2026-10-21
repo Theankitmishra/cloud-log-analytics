@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cloud Log Analytics & Anomaly Detection | Production Dashboard</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+  <div class="app-layout">
+    <!-- Top Header Navigation -->
+    <header class="top-nav">
+      <div class="nav-brand">
+        <div class="brand-badge"><span class="pulse-beacon"></span> LIVE</div>
+        <div class="brand-titles">
+          <h1>Cloud Log Analytics &amp; Anomaly Detection</h1>
+          <span class="brand-sub">AWS High-Availability Ingestion Platform · Isolation Forest MLOps</span>
+        </div>
+      </div>
+      <div class="nav-actions">
+        <button type="button" class="btn btn-secondary btn-sm" id="btnSimulateNormal">
+          <span>⚡ Send Normal Batch</span>
+        </button>
+        <button type="button" class="btn btn-danger btn-sm" id="btnSimulateAnomaly">
+          <span>🚨 Inject Cache Spike (40 Errors @ 1800ms)</span>
+        </button>
+        <a href="/docs" target="_blank" class="nav-link-btn">
+          <span>API Docs ↗</span>
+        </a>
+      </div>
+    </header>
+
+    <!-- KPI Metric Cards Grid -->
+    <section class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-label">TOTAL LOG EVENTS (15M)</div>
+        <div class="kpi-value" id="kpiTotalEvents">0</div>
+        <div class="kpi-subtext" id="kpiEventsRate">High-throughput ingestion</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">ERROR RATE</div>
+        <div class="kpi-value" id="kpiErrorRate">0.0%</div>
+        <div class="kpi-badge healthy" id="kpiErrorBadge">HEALTHY</div>
+      </div>
+      <div class="kpi-card highlight-card">
+        <div class="kpi-label">ISOLATION FOREST ANOMALIES</div>
+        <div class="kpi-value warning-color" id="kpiAnomalies">0</div>
+        <div class="kpi-subtext">EventBridge 5m Evaluator</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">AVERAGE LATENCY</div>
+        <div class="kpi-value" id="kpiAvgLatency">0 ms</div>
+        <div class="kpi-subtext" id="kpiP95">p95: -- ms</div>
+      </div>
+    </section>
+
+    <!-- Main Dashboard Split Grid -->
+    <main class="dashboard-grid">
+      <!-- Left Column: Volume Chart & Service Health Matrix -->
+      <div class="grid-col left-col">
+        <!-- Event Volume Trend Chart -->
+        <div class="panel">
+          <div class="panel-header">
+            <h3>📈 Event Volume &amp; Error Rate Trend</h3>
+            <span class="live-pill">Live Polling (5s)</span>
+          </div>
+          <div class="chart-container">
+            <canvas id="volumeChart"></canvas>
+          </div>
+        </div>
+
+        <!-- Service Health Matrix -->
+        <div class="panel">
+          <div class="panel-header">
+            <h3>🏥 Microservice Health Matrix</h3>
+            <span class="panel-meta">Error threshold: &gt;5% Warning, &gt;25% Critical</span>
+          </div>
+          <div class="service-matrix" id="serviceMatrix">
+            <!-- Dynamically populated -->
+            <div class="matrix-placeholder">Loading microservice status...</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column: Live SSE Stream & Anomaly Feed -->
+      <div class="grid-col right-col">
+        <!-- Live SSE Log Stream -->
+        <div class="panel stream-panel">
+          <div class="panel-header">
+            <div class="panel-title-group">
+              <span class="stream-dot"></span>
+              <h3>⚡ Live Ingestion Stream (SSE)</h3>
+            </div>
+            <div class="stream-controls">
+              <span class="stream-speed" id="streamCounter">0 events streamed</span>
+              <button type="button" class="mini-btn" id="btnClearStream">Clear</button>
+            </div>
+          </div>
+          <div class="terminal-body" id="logTerminal">
+            <div class="terminal-greeting">
+              [SYSTEM] Connected to Server-Sent Events channel: /logs/stream<br>
+              [SYSTEM] Streaming structured JSON log events in real-time...
+            </div>
+          </div>
+        </div>
+
+        <!-- Detected Anomalies Feed -->
+        <div class="panel anomaly-panel">
+          <div class="panel-header">
+            <h3>🛡️ Isolation Forest Anomaly Feed</h3>
+            <span class="panel-meta">Severity: CRITICAL ≤ -0.70 · HIGH ≤ -0.50</span>
+          </div>
+          <div class="anomaly-feed" id="anomalyFeed">
+            <div class="anomaly-empty">Scanning CloudWatch log streams...</div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer Meta -->
+    <footer class="app-footer">
+      <span>Architected by <strong>Ankit Kumar Mishra</strong> · M.Tech Computer Science, Delhi Technological University (DTU)</span>
+      <span>AWS EC2 ASG · ALB (TLS 1.3) · Multi-AZ RDS PostgreSQL · EventBridge Lambda · Trivy Hardened</span>
+    </footer>
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,71 @@
+version: '3.8'
+
+services:
+  # ─────────────────────────────────────────────────────────
+  # Primary Database Engine (PostgreSQL 15 with pgcrypto)
+  # ─────────────────────────────────────────────────────────
+  postgres:
+    image: postgres:15-alpine
+    container_name: loganalytics-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: loganalytics
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgrespassword
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d loganalytics"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # ─────────────────────────────────────────────────────────
+  # Cloud Log Analytics Ingestion & API Service
+  # ─────────────────────────────────────────────────────────
+  log-collector:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: loganalytics-api
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - "8080:8080"
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: loganalytics
+      DB_USER: postgres
+      DB_PASSWORD: postgrespassword
+      LOG_LEVEL: INFO
+      USE_POSTGRES: "true"
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:8080/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  # ─────────────────────────────────────────────────────────
+  # Synthetic Traffic & Anomaly Generator (Background Live Feed)
+  # ─────────────────────────────────────────────────────────
+  traffic-simulator:
+    image: python:3.11-slim
+    container_name: loganalytics-simulator
+    restart: unless-stopped
+    depends_on:
+      log-collector:
+        condition: service_healthy
+    volumes:
+      - ./scripts:/scripts:ro
+    command: >
+      sh -c "pip install --no-cache-dir httpx &&
+             python /scripts/simulate_traffic.py --url http://log-collector:8080 --loop"
+
+volumes:
+  pgdata:
+    driver: local
