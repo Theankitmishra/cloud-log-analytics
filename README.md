@@ -242,7 +242,7 @@ pytest tests -v
 **Ankit Kumar Mishra**  
 - **Degree**: M.Tech in Computer Science, **Delhi Technological University (DTU)**  
 - **Specialization**: Cloud Computing, Distributed Systems, LangGraph Multi-Agent AI & MLOps  
-- **Portfolio**: [ankit-mishra-portfolio](https://github.com/Theankitmishra)  
+- **Live Portfolio**: [portfolio-virid-nu-3wnb5oe7nu.vercel.app](https://portfolio-virid-nu-3wnb5oe7nu.vercel.app)  
 - **LinkedIn**: [linkedin.com/in/theankitmishraa](https://www.linkedin.com/in/theankitmishraa/)  
 - **Email**: [theankitmishraa@gmail.com](mailto:theankitmishraa@gmail.com)
 
